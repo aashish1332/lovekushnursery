@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { clearUserSessionCookie } from '@/lib/auth'
 import { success } from '@/lib/response'
 
