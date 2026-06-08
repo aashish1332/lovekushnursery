@@ -1,0 +1,485 @@
+/* ── Flowery UI Design Elements ──────────────────────── */
+
+/* Floral section divider */
+.floral-divider {
+  position: relative;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .floral-divider { height: 120px; }
+}
+
+/* Flowery corner ornaments */
+.floral-corner {
+  position: relative;
+}
+
+.floral-corner::before,
+.floral-corner::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  opacity: 0.12;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: opacity 0.5s ease;
+}
+
+.floral-corner:hover::before,
+.floral-corner:hover::after {
+  opacity: 0.2;
+}
+
+.floral-corner::before {
+  top: 12px;
+  left: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23c4a265' stroke-width='1'%3E%3Cpath d='M10 90 C10 50 30 20 50 10 C40 30 35 55 30 80'/%3E%3Cpath d='M50 10 C60 25 70 45 75 70'/%3E%3Cpath d='M50 10 C45 30 55 50 65 65'/%3E%3Ccircle cx='50' cy='8' r='4'/%3E%3Cpath d='M30 80 Q40 60 50 55'/%3E%3Cpath d='M75 70 Q60 55 50 55'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 640px) {
+  .floral-corner::before,
+  .floral-corner::after {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.floral-corner::after {
+  bottom: 12px;
+  right: 12px;
+  transform: rotate(180deg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23c4a265' stroke-width='1'%3E%3Cpath d='M10 90 C10 50 30 20 50 10 C40 30 35 55 30 80'/%3E%3Cpath d='M50 10 C60 25 70 45 75 70'/%3E%3Cpath d='M50 10 C45 30 55 50 65 65'/%3E%3Ccircle cx='50' cy='8' r='4'/%3E%3Cpath d='M30 80 Q40 60 50 55'/%3E%3Cpath d='M75 70 Q60 55 50 55'/%3E%3C/svg%3E");
+}
+
+/* Botanical line art pattern background */
+.botanical-bg {
+  position: relative;
+}
+
+.botanical-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%231a3c34' stroke-width='0.5'%3E%3Cpath d='M100 180 Q80 140 60 120 Q40 100 30 70 Q40 90 55 100 Q70 110 80 130'/%3E%3Cpath d='M100 180 Q120 140 140 120 Q160 100 170 70 Q160 90 145 100 Q130 110 120 130'/%3E%3Cpath d='M100 180 Q100 140 100 100 Q100 70 100 40'/%3E%3Ccircle cx='100' cy='35' r='8'/%3E%3Ccircle cx='100' cy='35' r='4'/%3E%3Cpath d='M60 120 Q50 110 35 115'/%3E%3Cpath d='M140 120 Q150 110 165 115'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+}
+
+/* Flowery section accent — top left vine */
+.floral-accent-left {
+  position: relative;
+}
+
+.floral-accent-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 200px;
+  opacity: 0.06;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200' fill='none' stroke='%232d6a3f' stroke-width='1'%3E%3Cpath d='M10 0 C10 40 20 80 40 110 C60 140 50 170 40 190'/%3E%3Cpath d='M40 60 C30 50 15 55 10 65'/%3E%3Cpath d='M30 90 C20 80 5 85 0 95'/%3E%3Cpath d='M45 120 C55 110 70 115 75 125'/%3E%3Cpath d='M40 150 C30 140 15 145 10 155'/%3E%3Cellipse cx='10' cy='65' rx='5' ry='8' transform='rotate(-20 10 65)'/%3E%3Cellipse cx='0' cy='95' rx='5' ry='8' transform='rotate(-20 0 95)'/%3E%3Cellipse cx='75' cy='125' rx='5' ry='8' transform='rotate(20 75 125)'/%3E%3Cellipse cx='10' cy='155' rx='5' ry='8' transform='rotate(-20 10 155)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .floral-accent-left::before {
+    width: 160px;
+    height: 280px;
+  }
+}
+
+/* Flowery section accent — bottom right vine */
+.floral-accent-right {
+  position: relative;
+}
+
+.floral-accent-right::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 120px;
+  height: 200px;
+  opacity: 0.06;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200' fill='none' stroke='%232d6a3f' stroke-width='1'%3E%3Cpath d='M110 200 C110 160 100 120 80 90 C60 60 70 30 80 10'/%3E%3Cpath d='M80 140 C90 150 105 145 110 135'/%3E%3Cpath d='M90 110 C100 120 115 115 120 105'/%3E%3Cpath d='M75 80 C65 90 50 85 45 75'/%3E%3Cpath d='M80 50 C90 60 105 55 110 45'/%3E%3Cellipse cx='110' cy='135' rx='5' ry='8' transform='rotate(20 110 135)'/%3E%3Cellipse cx='120' cy='105' rx='5' ry='8' transform='rotate(20 120 105)'/%3E%3Cellipse cx='45' cy='75' rx='5' ry='8' transform='rotate(-20 45 75)'/%3E%3Cellipse cx='110' cy='45' rx='5' ry='8' transform='rotate(20 110 45)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .floral-accent-right::after {
+    width: 160px;
+    height: 280px;
+  }
+}
+
+/* Flowery petal border for cards */
+.petal-border {
+  position: relative;
+  overflow: visible;
+}
+
+.petal-border::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 16' fill='none'%3E%3Cpath d='M20 16 C16 10 8 4 4 2 C10 4 16 8 20 12' fill='%23c4a265' opacity='0.3'/%3E%3Cpath d='M20 16 C24 10 32 4 36 2 C30 4 24 8 20 12' fill='%23c4a265' opacity='0.3'/%3E%3Ccircle cx='20' cy='2' r='2' fill='%23c4a265' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+.petal-border:hover::before {
+  opacity: 1;
+}
+
+/* Flowery quote mark for testimonials */
+.floral-quote {
+  position: relative;
+}
+
+.floral-quote::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.15;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Cpath d='M4 24 C4 16 8 10 16 8 C12 12 10 16 8 24' fill='%23c4a265'/%3E%3Cpath d='M16 24 C16 16 20 10 28 8 C24 12 22 16 20 24' fill='%23c4a265'/%3E%3Ccircle cx='16' cy='6' r='2' fill='%23c4a265'/%3E%3Ccircle cx='28' cy='6' r='2' fill='%23c4a265'/%3E%3C/svg%3E");
+}
+
+/* Leaf bullet points */
+.leaf-bullet {
+  list-style: none;
+  padding-left: 0;
+}
+
+.leaf-bullet li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.leaf-bullet li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%232d6a3f' stroke-width='1'%3E%3Cpath d='M8 14 Q4 10 2 6 Q4 8 8 6 Q12 8 14 6 Q12 10 8 14'/%3E%3Cpath d='M8 14 L8 2'/%3E%3C/svg%3E");
+}
+
+/* Flowery underline for headings */
+.floral-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.floral-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 12px;
+  opacity: 0.25;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 12' fill='none'%3E%3Cpath d='M0 6 C10 6 15 2 20 2 C25 2 25 6 30 6' stroke='%23c4a265' stroke-width='0.8'/%3E%3Ccircle cx='30' cy='6' r='2' fill='%23c4a265'/%3E%3Ccircle cx='40' cy='3' r='1.5' fill='%23c4a265' opacity='0.6'/%3E%3Ccircle cx='50' cy='6' r='2' fill='%23c4a265'/%3E%3Cpath d='M50 6 C55 6 55 2 60 2 C65 2 70 6 80 6' stroke='%23c4a265' stroke-width='0.8'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 640px) {
+  .floral-underline::after {
+    width: 120px;
+    height: 16px;
+  }
+}
+
+/* Floating flower petals animation */
+@keyframes floatPetal1 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translate(-100px, 100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes floatPetal2 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.1; }
+  90% { opacity: 0.1; }
+  100% { transform: translate(80px, 100vh) rotate(-360deg); opacity: 0; }
+}
+
+.floating-petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-petals .petal {
+  position: absolute;
+  width: 12px;
+  height: 18px;
+  opacity: 0;
+  will-change: transform;
+}
+
+.floating-petals .petal:nth-child(1) { left: 10%; top: -20px; animation: floatPetal1 12s linear 0s infinite; }
+.floating-petals .petal:nth-child(2) { left: 25%; top: -20px; animation: floatPetal2 15s linear 3s infinite; }
+.floating-petals .petal:nth-child(3) { left: 45%; top: -20px; animation: floatPetal1 18s linear 6s infinite; }
+.floating-petals .petal:nth-child(4) { left: 65%; top: -20px; animation: floatPetal2 14s linear 2s infinite; }
+.floating-petals .petal:nth-child(5) { left: 80%; top: -20px; animation: floatPetal1 16s linear 8s infinite; }
+.floating-petals .petal:nth-child(6) { left: 90%; top: -20px; animation: floatPetal2 13s linear 5s infinite; }
+
+@media (max-width: 639px) {
+  .floating-petals { display: none; }
+}
+/* ── Vine & Climber Decorations ───────────────────────── */
+
+/* Corner vine — top-left */
+.vine-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.12;
+  transition: opacity 0.6s ease;
+}
+
+.vine-tl:hover { opacity: 0.18; }
+
+@media (min-width: 640px) {
+  .vine-tl { width: 280px; height: 440px; }
+}
+
+@media (min-width: 1024px) {
+  .vine-tl { width: 360px; height: 560px; }
+}
+
+/* Corner vine — top-right */
+.vine-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.1;
+  transform: scaleX(-1);
+  transition: opacity 0.6s ease;
+}
+
+.vine-tr:hover { opacity: 0.16; }
+
+@media (min-width: 640px) {
+  .vine-tr { width: 280px; height: 440px; }
+}
+
+@media (min-width: 1024px) {
+  .vine-tr { width: 360px; height: 560px; }
+}
+
+/* Corner vine — bottom-left */
+.vine-bl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 180px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.08;
+  transform: scaleY(-1);
+  transition: opacity 0.6s ease;
+}
+
+@media (min-width: 640px) {
+  .vine-bl { width: 240px; height: 380px; }
+}
+
+@media (min-width: 1024px) {
+  .vine-bl { width: 300px; height: 480px; }
+}
+
+/* Corner vine — bottom-right */
+.vine-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 180px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.08;
+  transform: scale(-1, -1);
+  transition: opacity 0.6s ease;
+}
+
+@media (min-width: 640px) {
+  .vine-br { width: 240px; height: 380px; }
+}
+
+@media (min-width: 1024px) {
+  .vine-br { width: 300px; height: 480px; }
+}
+
+/* Side vine — left edge */
+.vine-left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.07;
+}
+
+@media (min-width: 640px) {
+  .vine-left { width: 120px; height: 500px; }
+}
+
+/* Side vine — right edge */
+.vine-right {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) scaleX(-1);
+  width: 80px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.07;
+}
+
+@media (min-width: 640px) {
+  .vine-right { width: 120px; height: 500px; }
+}
+
+/* Hanging vine from top */
+.vine-hang {
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.08;
+}
+
+@media (min-width: 640px) {
+  .vine-hang { width: 80px; height: 280px; }
+}
+
+/* Vine border — horizontal vine along top/bottom of section */
+.vine-border-top {
+  position: relative;
+}
+
+.vine-border-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  opacity: 0.06;
+  background-repeat: repeat-x;
+  background-size: 200px 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' fill='none'%3E%3Cpath d='M0 35 Q20 30 40 25 Q60 18 80 22 Q100 28 120 20 Q140 12 160 18 Q180 25 200 20' stroke='%232d6a3f' stroke-width='1'/%3E%3Cpath d='M40 25 Q35 15 30 10' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='30' cy='10' rx='4' ry='7' transform='rotate(-20 30 10)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M100 28 Q95 18 92 12' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='92' cy='12' rx='3.5' ry='6' transform='rotate(-15 92 12)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M160 18 Q155 8 152 2' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='152' cy='2' rx='4' ry='7' transform='rotate(-10 152 2)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Ccircle cx='60' cy='22' r='2' fill='%23c4a265' opacity='0.4'/%3E%3Ccircle cx='140' cy='15' r='1.5' fill='%23c4a265' opacity='0.3'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.vine-border-bottom {
+  position: relative;
+}
+
+.vine-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  opacity: 0.06;
+  background-repeat: repeat-x;
+  background-size: 200px 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' fill='none'%3E%3Cpath d='M0 5 Q20 10 40 15 Q60 22 80 18 Q100 12 120 20 Q140 28 160 22 Q180 15 200 20' stroke='%232d6a3f' stroke-width='1'/%3E%3Cpath d='M40 15 Q35 25 30 30' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='30' cy='30' rx='4' ry='7' transform='rotate(20 30 30)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M100 12 Q95 22 92 28' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='92' cy='28' rx='3.5' ry='6' transform='rotate(15 92 28)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Ccircle cx='60' cy='18' r='2' fill='%23c4a265' opacity='0.4'/%3E%3Ccircle cx='140' cy='25' r='1.5' fill='%23c4a265' opacity='0.3'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Vine wrap — vine hugging a card */
+.vine-wrap {
+  position: relative;
+}
+
+.vine-wrap::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 60px;
+  height: 80px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 80' fill='none'%3E%3Cpath d='M60 0 C55 15 45 30 35 40 C25 50 20 65 18 80' stroke='%232d6a3f' stroke-width='1'/%3E%3Cpath d='M35 40 C28 35 22 38 20 45' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='20' cy='45' rx='5' ry='8' transform='rotate(-25 20 45)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M45 25 C50 20 55 22 58 18' stroke='%23c4a265' stroke-width='0.5'/%3E%3Ccircle cx='58' cy='18' r='2' fill='%23c4a265' opacity='0.5'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 2;
+}
+
+.vine-wrap:hover::before {
+  opacity: 0.15;
+}
+
+/* Vine growing from bottom of a section */
+.vine-grow {
+  position: relative;
+}
+
+.vine-grow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 120px;
+  opacity: 0.06;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='none'%3E%3Cpath d='M50 120 C50 90 48 70 50 50 C52 30 48 15 50 0' stroke='%232d6a3f' stroke-width='1'/%3E%3Cpath d='M50 80 C42 72 35 75 32 82' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='32' cy='82' rx='5' ry='8' transform='rotate(-20 32 82)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M50 55 C58 47 65 50 68 57' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='68' cy='57' rx='5' ry='8' transform='rotate(20 68 57)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Cpath d='M50 30 C42 22 35 25 32 32' stroke='%232d6a3f' stroke-width='0.7'/%3E%3Cellipse cx='32' cy='32' rx='4' ry='6' transform='rotate(-15 32 32)' stroke='%232d6a3f' stroke-width='0.6' fill='none'/%3E%3Ccircle cx='50' cy='0' r='3' fill='%23c4a265' opacity='0.4'/%3E%3C/svg%3E");
+  pointer-events: none;
+}

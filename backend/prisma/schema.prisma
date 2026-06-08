@@ -1,0 +1,216 @@
+// Prisma Schema for Love Kush Nursery
+// Database: TiDB Cloud (MySQL compatible)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Plants ──────────────────────────────────────────────────
+
+model Plant {
+  id                String   @id @default(uuid()) @db.VarChar(36)
+  name              String   @db.VarChar(255)
+  price             Float
+  offerPrice        Float?   // discounted price (nullable = no offer)
+  category          String   @db.VarChar(100)
+  description       String   @db.Text
+  howToPlant        String   @db.Text
+  imageUrl          String   @db.VarChar(500)
+  imageKey          String?  @db.VarChar(500)
+  featured          Boolean  @default(false)
+  inStock           Boolean  @default(true)
+  stockQuantity     Int      @default(0)
+  lightRequirement  String?  @db.VarChar(100)   // Low, Medium, Bright Indirect, Direct Sunlight
+  waterFrequency    String?  @db.VarChar(100)   // Every 3-5 days, Weekly, Bi-weekly, Monthly
+  size              String?  @db.VarChar(50)    // Small, Medium, Large, XL
+  temperature       String?  @db.VarChar(50)    // e.g. "15-30°C"
+  tags              String?  @db.VarChar(500)   // comma-separated: "air-purifying,pet-safe,bestseller"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([category])
+  @@index([featured])
+  @@index([createdAt])
+  @@map("plants")
+}
+
+// ── Hero Slides ─────────────────────────────────────────────
+
+model HeroSlide {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  title       String   @db.VarChar(255)
+  subtitle    String   @db.VarChar(500)
+  imageUrl    String   @db.VarChar(500)
+  imageKey    String?  @db.VarChar(500)
+  ctaText     String   @default("Explore Collection")
+  ctaLink     String   @default("#products")
+  sortOrder   Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("hero_slides")
+}
+
+// ── Offers / Deals ──────────────────────────────────────────
+
+model Offer {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  discount    String   @db.VarChar(50)   // e.g. "20%", "₹500 OFF"
+  imageUrl    String?  @db.VarChar(500)
+  imageKey    String?  @db.VarChar(500)
+  code        String?  @db.VarChar(50)   // coupon code
+  validFrom   DateTime?
+  validUntil  DateTime?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("offers")
+}
+
+// ── Site Settings (single row) ──────────────────────────────
+
+model SiteSettings {
+  id              String   @id @default("singleton") @db.VarChar(36)
+  nurseryName     String   @default("Love Kush Nursery") @db.VarChar(255)
+  tagline         String   @default("Premium Plants & Garden Solutions") @db.VarChar(500)
+  email           String   @default("hello@lovekushnursery.com") @db.VarChar(255)
+  phone           String   @default("+91 98765 43210") @db.VarChar(20)
+  altPhone        String?  @db.VarChar(20)
+  address         String   @default("Near Sector 15, Old Delhi Road, Gurugram, Haryana 122001") @db.VarChar(500)
+  mapUrl          String?  @db.VarChar(500)
+  latitude        Float?
+  longitude       Float?
+  openHours       String   @default("Mon-Sat: 8AM-8PM | Sun: 9AM-6PM") @db.VarChar(255)
+  instagram       String?  @db.VarChar(255)
+  facebook        String?  @db.VarChar(255)
+  twitter         String?  @db.VarChar(255)
+  youtube         String?  @db.VarChar(255)
+  whatsapp        String?  @db.VarChar(20)
+  googleRating    Float?   @default(4.9)
+  totalReviews    Int?     @default(2000)
+  logoUrl         String?  @db.VarChar(500)
+  logoKey         String?  @db.VarChar(500)
+  faviconUrl      String?  @db.VarChar(500)
+  updatedAt       DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// ── Users (Phone-based) ───────────────────────────────────
+
+model User {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  googleId      String?  @db.VarChar(100)
+  email         String?  @db.VarChar(255)
+  name          String   @db.VarChar(255)
+  phone         String   @unique @db.VarChar(20)
+  addressLine1  String?  @db.VarChar(500)
+  addressLine2  String?  @db.VarChar(500)
+  city          String?  @db.VarChar(100)
+  state         String?  @db.VarChar(100)
+  pincode       String?  @db.VarChar(10)
+  country       String?  @db.VarChar(100) @default("India")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders        Order[]
+
+  @@index([phone])
+  @@map("users")
+}
+
+// ── Orders ──────────────────────────────────────────────────
+
+model Order {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  userId          String   @db.VarChar(36)
+  phone           String   @db.VarChar(20)
+  addressLine1    String   @db.VarChar(500)
+  addressLine2    String?  @db.VarChar(500)
+  city            String   @db.VarChar(100)
+  state           String   @db.VarChar(100)
+  pincode         String   @db.VarChar(10)
+  country         String   @db.VarChar(100) @default("India")
+  totalAmount     Float
+  discountAmount  Float    @default(0)
+  offerCode       String?  @db.VarChar(50)
+  status          String   @db.VarChar(50) @default("pending")  // pending, confirmed, shipped, delivered, cancelled, rejected
+  rejectionReason String?  @db.Text
+  notes           String?  @db.Text
+  archived        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  statusHistory   OrderStatusHistory[]
+
+  @@index([userId])
+  @@index([phone])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+// ── Order Items ─────────────────────────────────────────────
+
+model OrderItem {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  orderId         String   @db.VarChar(36)
+  plantId         String   @db.VarChar(36)
+  plantName       String   @db.VarChar(255)
+  plantImage      String   @db.VarChar(500)
+  price           Float
+  quantity        Int      @default(1)
+  createdAt       DateTime @default(now())
+
+  order           Order    @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// ── Order Status History (Audit Trail) ──────────────────────
+
+model OrderStatusHistory {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  orderId         String   @db.VarChar(36)
+  oldStatus       String?  @db.VarChar(50)
+  newStatus       String   @db.VarChar(50)
+  changedBy       String   @db.VarChar(100)  // "admin" or user identifier
+  reason          String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  order           Order    @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([createdAt])
+  @@map("order_status_history")
+}
+
+// ── Audit Logs ──────────────────────────────────────────────
+
+model AuditLog {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  action          String   @db.VarChar(100)  // plant.created, order.status_changed, etc.
+  entity          String   @db.VarChar(50)   // plant, order, user, settings
+  entityId        String?  @db.VarChar(36)
+  details         String?  @db.Text          // JSON with additional context
+  performedBy     String   @db.VarChar(100)  // admin username
+  createdAt       DateTime @default(now())
+
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
