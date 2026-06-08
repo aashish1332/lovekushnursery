@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { ArrowLeft, User, Package, LogOut, Save, X } from 'lucide-react'
 
+import { API_BASE } from '../lib/api';
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
   'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
@@ -87,7 +88,7 @@ export default function AccountPage({ onBack, onComplete }: AccountPageProps) {
   useEffect(() => {
     if (tab !== 'orders') return
     setLoadingOrders(true)
-    fetch('/api/orders', { credentials: 'include' })
+    fetch(`${API_BASE}/api/orders`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => { if (data.success) setOrders(data.data) })
       .catch(() => {})
@@ -99,7 +100,7 @@ export default function AccountPage({ onBack, onComplete }: AccountPageProps) {
     const handler = () => {
       if (tab === 'orders') {
         setLoadingOrders(true)
-        fetch('/api/orders', { credentials: 'include' })
+        fetch(`${API_BASE}/api/orders`, { credentials: 'include' })
           .then(res => res.json())
           .then(data => { if (data.success) setOrders(data.data) })
           .catch(() => {})

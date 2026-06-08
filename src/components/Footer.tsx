@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Heart, ArrowUp, Leaf, Instagram, Facebook, Twitter, Youtube } from 'lucide-react'
 
+import { API_BASE } from '../lib/api';
 interface SiteSettings {
   nurseryName: string
   tagline: string
@@ -38,7 +39,7 @@ export default function Footer() {
   const [settings, setSettings] = useState<SiteSettings | null>(null)
 
   useEffect(() => {
-    fetch('/api/settings')
+    fetch(`${API_BASE}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setSettings(data.data)

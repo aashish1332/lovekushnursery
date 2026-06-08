@@ -3,6 +3,7 @@ import { useCart } from '../hooks/useCart'
 import { useAuth } from '../hooks/useAuth'
 import { Tag, X, Loader2 } from 'lucide-react'
 
+import { API_BASE } from '../lib/api';
 interface CheckoutProps {
   isOpen: boolean
   onClose: () => void

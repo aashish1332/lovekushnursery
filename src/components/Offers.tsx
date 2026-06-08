@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { Tag, Clock, Copy, Check } from 'lucide-react'
 
+import { API_BASE } from '../lib/api';
 interface Offer {
   id: string
   title: string
@@ -21,7 +22,7 @@ export default function Offers() {
   const { ref, isVisible } = useScrollReveal(0.05)
 
   useEffect(() => {
-    fetch('/api/offers?active=true')
+    fetch(`${API_BASE}/api/offers?active=true`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setOffers(data.data)

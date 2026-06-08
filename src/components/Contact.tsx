@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react'
 
+import { API_BASE } from '../lib/api';
 interface SiteSettings {
   phone: string
   altPhone: string | null
@@ -18,7 +19,7 @@ export default function Contact() {
   const [settings, setSettings] = useState<SiteSettings | null>(null)
 
   useEffect(() => {
-    fetch('/api/settings')
+    fetch(`${API_BASE}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setSettings(data.data)

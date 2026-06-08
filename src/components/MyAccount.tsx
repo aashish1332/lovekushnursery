@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 
+import { API_BASE } from '../lib/api';
 interface Order {
   id: string
   totalAmount: number
@@ -102,7 +103,7 @@ export default function MyAccount({ isOpen, onClose }: MyAccountProps) {
     const handler = () => {
       if (tab === 'orders') {
         setLoadingOrders(true)
-        fetch('/api/orders', { credentials: 'include' })
+        fetch(`${API_BASE}/api/orders`, { credentials: 'include' })
           .then(res => res.json())
           .then(data => { if (data.success) setOrders(data.data) })
           .catch(() => {})
