@@ -1,4 +1,4 @@
-export const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://api-lovekushnursery.vercel.app' : (typeof window !== 'undefined' ? '' : 'http://localhost:3001'))
+export const API_BASE = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? '' : 'http://localhost:3001')
 
 /** Build a fetch URL that works whether API_BASE is a full origin (prod)
  *  or an empty string (dev, where Vite proxies /api to the backend).

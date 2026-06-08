@@ -3,6 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  async rewrites() {
+    return [
+      {
+        source: '/:path((?!api/|_next/|assets/|favicon.ico).*)',
+        destination: '/index.html',
+      },
+    ]
+  },
   async headers() {
     return [
       {
