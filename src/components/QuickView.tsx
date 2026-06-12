@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Plant } from '../lib/api'
 
@@ -13,6 +13,8 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
   const overlayRef = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
 
   useEffect(() => {
     if (!plant) return
@@ -21,11 +23,11 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
     // Push history state so back button closes modal on mobile
     window.history.pushState({ modal: true }, '')
     let poppedByBack = false
-    const handlePopState = () => { poppedByBack = true; onClose() }
+    const handlePopState = () => { poppedByBack = true; onCloseRef.current() }
     window.addEventListener('popstate', handlePopState)
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') onCloseRef.current()
     }
     document.addEventListener('keydown', handleEsc)
     document.body.style.overflow = 'hidden'
@@ -40,7 +42,7 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
         window.history.back()
       }
     }
-  }, [plant, onClose])
+  }, [plant])
 
   const handleWheel = (e: React.WheelEvent) => {
     const modal = modalRef.current
