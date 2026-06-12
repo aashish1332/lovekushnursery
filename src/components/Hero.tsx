@@ -34,7 +34,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-[85vh] flex items-center justify-center overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden py-24 sm:py-28 md:py-32"
       style={{ backgroundColor: '#0a1f1a' }}
     >
       {/* Dark gradient background */}
