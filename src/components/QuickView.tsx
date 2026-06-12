@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Plant } from '../lib/api'
 
@@ -20,7 +20,6 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
     if (!plant) return
     setCurrentImageIndex(0)
 
-    // Push history state so back button closes modal on mobile
     window.history.pushState({ modal: true }, '')
     let poppedByBack = false
     const handlePopState = () => { poppedByBack = true; onCloseRef.current() }
@@ -37,7 +36,6 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
       document.removeEventListener('keydown', handleEsc)
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
-      // If closed via X/overlay/Escape (not back button), pop the extra history entry
       if (!poppedByBack && window.history.state?.modal) {
         window.history.back()
       }
@@ -74,25 +72,23 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
     >
-      {/* Close button - always visible, outside scrollable area */}
-      <button
-        onClick={onClose}
-        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[60] w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors shadow-xl"
-        style={{ position: 'fixed' }}
-      >
-        <X size={20} />
-      </button>
-
       <div
         ref={modalRef}
         onWheel={handleWheel}
         onTouchMove={(e) => e.stopPropagation()}
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl"
       >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="sticky top-3 float-right mr-3 mt-3 z-10 w-9 h-9 flex items-center justify-center bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors shadow-lg"
+        >
+          <X size={18} />
+        </button>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row clear-both">
           {/* Image Carousel */}
           <div className="relative md:w-1/2">
             <div className="bg-gradient-to-br from-forest-50 to-sage-50 relative">
