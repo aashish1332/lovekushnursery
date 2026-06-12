@@ -25,7 +25,15 @@ export default function Offers() {
     fetch(`${API_BASE}/api/offers?active=true`)
       .then(res => res.json())
       .then(data => {
-        if (data.success) setOffers(data.data)
+        if (data.success) {
+          const now = new Date()
+          const validOffers = data.data.filter((offer: Offer) => {
+            if (offer.validUntil && new Date(offer.validUntil) < now) return false
+            if (offer.validFrom && new Date(offer.validFrom) > now) return false
+            return true
+          })
+          setOffers(validOffers)
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false))
