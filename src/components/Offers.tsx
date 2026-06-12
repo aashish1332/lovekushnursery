@@ -44,7 +44,7 @@ export default function Offers() {
   if (loading || offers.length === 0) return null
 
   return (
-    <section className="relative pt-6 sm:pt-8 pb-10 sm:pb-12 md:pb-16 overflow-hidden" style={{ background: 'var(--color-bg)' }}>
+    <section className="relative pt-2 pb-4 sm:pt-3 sm:pb-6 overflow-hidden" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div ref={ref} className={`section-reveal ${isVisible ? 'visible' : ''}`}>
           {/* Header */}

@@ -303,7 +303,7 @@ export default function Collection({ onAddToCart, addedPlantId }: CollectionProp
   }, [active])
 
   return (
-    <section id="products" className="relative pt-6 sm:pt-8 pb-20 sm:pb-28 md:pb-32 floral-accent-right overflow-hidden" style={{ background: 'var(--color-bg)' }}>
+    <section id="products" className="relative pt-2 sm:pt-3 pb-20 sm:pb-28 md:pb-32 floral-accent-right overflow-hidden" style={{ background: 'var(--color-bg)' }}>
       <VineCorner position="tr" opacity={0.08} />
       <VineCorner position="bl" opacity={0.06} />
       <VineHanging offset="85%" opacity={0.07} />

@@ -17,6 +17,13 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
   useEffect(() => {
     if (!plant) return
     setCurrentImageIndex(0)
+
+    // Push history state so back button closes modal on mobile
+    window.history.pushState({ modal: true }, '')
+    let poppedByBack = false
+    const handlePopState = () => { poppedByBack = true; onClose() }
+    window.addEventListener('popstate', handlePopState)
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -24,9 +31,14 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
     document.body.style.overflow = 'hidden'
     document.documentElement.style.overflow = 'hidden'
     return () => {
+      window.removeEventListener('popstate', handlePopState)
       document.removeEventListener('keydown', handleEsc)
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
+      // If closed via X/overlay/Escape (not back button), pop the extra history entry
+      if (!poppedByBack && window.history.state?.modal) {
+        window.history.back()
+      }
     }
   }, [plant, onClose])
 
@@ -71,9 +83,9 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center bg-white/90 rounded-full hover:bg-white transition-colors shadow-sm"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center bg-black/50 sm:bg-white/90 text-white sm:text-black rounded-full hover:bg-black/70 sm:hover:bg-white transition-colors shadow-lg"
         >
-          <X size={16} />
+          <X size={18} />
         </button>
 
         <div className="flex flex-col md:flex-row">
