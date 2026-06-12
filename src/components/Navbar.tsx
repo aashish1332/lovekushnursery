@@ -106,6 +106,9 @@ export default function Navbar({ cartItemCount, onCartClick, onAccountClick, onL
               )}
             </button>
 
+            {/* Dark mode toggle */}
+            <button onClick={toggleDark} className="theme-toggle" aria-label="Toggle dark mode" />
+
             {/* Account / Login button */}
             {user ? (
               <button
