@@ -24,9 +24,6 @@
   --color-hero-subtext: rgba(237, 229, 216, 0.85);
   --color-hero-label: rgba(237, 229, 216, 0.55);
   --color-overlay: rgba(26, 60, 52, 0.2);
-  --color-vine-stem: #2d6a3f;
-  --color-vine-leaf: #95b59e;
-  --color-vine-bud: #c4a265;
 }
 
 /* ── Dark Mode ───────────────────────────────────────── */
@@ -51,9 +48,6 @@
   --color-hero-subtext: rgba(149, 181, 158, 0.85);
   --color-hero-label: rgba(149, 181, 158, 0.55);
   --color-overlay: rgba(12, 12, 13, 0.3);
-  --color-vine-stem: #6b8f71;
-  --color-vine-leaf: #95b59e;
-  --color-vine-bud: #e5b96b;
 }
 
 *, *::before, *::after {

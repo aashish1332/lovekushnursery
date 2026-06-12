@@ -22,7 +22,7 @@ export default function Hero() {
         text.style.opacity = `${1 - progress * 1.8}`
       }
       if (overlay) {
-        overlay.style.opacity = `${0.2 + progress * 0.6}`
+        overlay.style.opacity = `${0.6 + progress * 0.4}`
       }
     }
 
@@ -35,6 +35,7 @@ export default function Hero() {
       ref={sectionRef}
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: '#0a1f1a' }}
     >
       {/* Dark gradient background */}
       <div className="absolute inset-0 bg-mesh-gradient hero-overlay opacity-100" />
