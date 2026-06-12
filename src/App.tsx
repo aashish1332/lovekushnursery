@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { LenisProvider, useStopLenis } from './hooks/useLenis'
 
 import Loader from './components/Loader'
@@ -24,8 +24,6 @@ import Checkout from './components/Checkout'
 import AccountPage from './pages/AccountPage'
 import Offers from './components/Offers'
 import type { Plant } from './lib/api'
-
-const Scene3D = lazy(() => import('./components/Scene3D'))
 
 function AppContent() {
   const scrollProgress = useScrollProgress()
@@ -104,9 +102,6 @@ function AppContent() {
         className="scroll-progress"
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
-      <Suspense fallback={null}>
-        <Scene3D />
-      </Suspense>
       <Navbar
         cartItemCount={itemCount}
         onCartClick={() => setCartOpen(true)}
