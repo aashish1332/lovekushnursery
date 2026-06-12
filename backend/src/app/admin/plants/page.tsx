@@ -21,6 +21,7 @@ interface Plant {
   temperature: string | null
   tags: string | null
   createdAt: string
+  images?: { id: string; imageUrl: string; order: number }[]
 }
 
 const CATEGORIES = ['indoor', 'outdoor', 'flowering', 'succulents', 'rare', 'herbs', 'trees']
@@ -39,7 +40,10 @@ export default function PlantsPage() {
     description: '', howToPlant: '', featured: false, inStock: true, stockQuantity: '0',
     lightRequirement: '', waterFrequency: '', size: '', temperature: '', tags: '',
   })
-  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageFiles, setImageFiles] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
+  const [existingImages, setExistingImages] = useState<{ id: string; imageUrl: string }[]>([])
+  const [removedImageIds, setRemovedImageIds] = useState<string[]>([])
 
   const loadPlants = async () => {
     setLoading(true)
@@ -55,8 +59,10 @@ export default function PlantsPage() {
 
   const resetForm = () => {
     setFormData({ name: '', price: '', offerPrice: '', category: 'indoor', description: '', howToPlant: '', featured: false, inStock: true, stockQuantity: '0', lightRequirement: '', waterFrequency: '', size: '', temperature: '', tags: '' })
-    setImageFile(null)
-    setPreview(null)
+    setImageFiles([])
+    setImagePreviews([])
+    setExistingImages([])
+    setRemovedImageIds([])
     setEditingId(null)
     setShowForm(false)
     setMessage(null)
@@ -70,7 +76,13 @@ export default function PlantsPage() {
       lightRequirement: plant.lightRequirement || '', waterFrequency: plant.waterFrequency || '',
       size: plant.size || '', temperature: plant.temperature || '', tags: plant.tags || '',
     })
-    setPreview(plant.imageUrl)
+    const existing = plant.images && plant.images.length > 0
+      ? plant.images.sort((a, b) => a.order - b.order)
+      : [{ id: 'primary', imageUrl: plant.imageUrl }]
+    setExistingImages(existing)
+    setImageFiles([])
+    setImagePreviews([])
+    setRemovedImageIds([])
     setEditingId(plant.id)
     setShowForm(true)
     setMessage(null)
@@ -97,7 +109,16 @@ export default function PlantsPage() {
       if (formData.size) body.append('size', formData.size)
       if (formData.temperature) body.append('temperature', formData.temperature)
       if (formData.tags) body.append('tags', formData.tags)
-      if (imageFile) body.append('image', imageFile)
+
+      // Append multiple image files
+      for (const file of imageFiles) {
+        body.append('images', file)
+      }
+
+      // Append removed image IDs
+      if (removedImageIds.length > 0) {
+        body.append('removeImages', removedImageIds.join(','))
+      }
 
       const url = editingId ? `/api/plants/${editingId}` : '/api/plants'
       const method = editingId ? 'PUT' : 'POST'
@@ -184,28 +205,78 @@ export default function PlantsPage() {
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {/* Image Upload */}
               <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: '#333', marginBottom: 6, display: 'block' }}>Plant Image</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: '#333', marginBottom: 6, display: 'block' }}>
+                  Plant Images {editingId ? '' : '*'}
+                  <span style={{ fontWeight: 400, color: '#999', fontSize: 11, marginLeft: 8 }}>
+                    {editingId ? '(new images will be added)' : '(first image is the cover)'}
+                  </span>
+                </label>
+
+                {/* Existing images (edit mode) */}
+                {existingImages.length > 0 && (
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                    {existingImages.map((img, i) => (
+                      <div key={img.id} style={{ position: 'relative', width: 90, height: 90, borderRadius: 8, overflow: 'hidden', border: '1px solid #ddd' }}>
+                        <img src={img.imageUrl} alt={`Image ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setExistingImages(prev => prev.filter(x => x.id !== img.id))
+                            setRemovedImageIds(prev => [...prev, img.id])
+                          }}
+                          style={{ position: 'absolute', top: 2, right: 2, width: 20, height: 20, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >×</button>
+                        {i === 0 && (
+                          <span style={{ position: 'absolute', bottom: 2, left: 2, background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: 9, padding: '1px 4px', borderRadius: 3 }}>COVER</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* New image previews */}
+                {imagePreviews.length > 0 && (
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                    {imagePreviews.map((url, i) => (
+                      <div key={i} style={{ position: 'relative', width: 90, height: 90, borderRadius: 8, overflow: 'hidden', border: '2px solid #2d6a3f' }}>
+                        <img src={url} alt={`New ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            URL.revokeObjectURL(imagePreviews[i])
+                            setImageFiles(prev => prev.filter((_, j) => j !== i))
+                            setImagePreviews(prev => prev.filter((_, j) => j !== i))
+                          }}
+                          style={{ position: 'absolute', top: 2, right: 2, width: 20, height: 20, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upload zone */}
                 <div style={{
-                  border: '2px dashed #ddd', borderRadius: 12, padding: 24, textAlign: 'center',
-                  background: preview ? '#f9f9f9' : '#fafafa', cursor: 'pointer',
-                }} onClick={() => document.getElementById('plant-image')?.click()}>
-                  {preview ? (
-                    <img src={preview} alt="Preview" style={{ maxWidth: '100%', maxHeight: 200, borderRadius: 8, objectFit: 'cover' }} />
-                  ) : (
-                    <div>
-                      <span style={{ fontSize: 36 }}>📷</span>
-                      <p style={{ fontSize: 13, color: '#666', margin: '8px 0 0' }}>Click to upload image</p>
-                    </div>
-                  )}
+                  border: '2px dashed #ddd', borderRadius: 12, padding: 20, textAlign: 'center',
+                  background: '#fafafa', cursor: 'pointer',
+                }} onClick={() => document.getElementById('plant-images')?.click()}>
+                  <span style={{ fontSize: 32 }}>📷</span>
+                  <p style={{ fontSize: 13, color: '#666', margin: '6px 0 0' }}>
+                    Click to add images (multiple allowed)
+                  </p>
                 </div>
                 <input
-                  id="plant-image"
+                  id="plant-images"
                   type="file"
                   accept="image/*"
+                  multiple
                   style={{ display: 'none' }}
                   onChange={e => {
-                    const file = e.target.files?.[0]
-                    if (file) { setImageFile(file); setPreview(URL.createObjectURL(file)) }
+                    const files = Array.from(e.target.files || [])
+                    if (files.length === 0) return
+                    const newPreviews = files.map(f => URL.createObjectURL(f))
+                    setImageFiles(prev => [...prev, ...files])
+                    setImagePreviews(prev => [...prev, ...newPreviews])
+                    e.target.value = ''
                   }}
                 />
               </div>
@@ -359,7 +430,14 @@ export default function PlantsPage() {
               {filteredPlants.map(plant => (
                 <tr key={plant.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                   <td style={{ padding: '12px 16px' }}>
-                    <img src={plant.imageUrl} alt={plant.name} style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover' }} />
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                      <img src={plant.imageUrl} alt={plant.name} style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover' }} />
+                      {plant.images && plant.images.length > 1 && (
+                        <span style={{ position: 'absolute', bottom: -4, right: -4, background: '#2d6a3f', color: '#fff', fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 8 }}>
+                          {plant.images.length}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td style={{ padding: '12px 16px', fontWeight: 600, color: '#1a1a1a' }}>{plant.name}</td>
                   <td style={{ padding: '12px 16px' }}>

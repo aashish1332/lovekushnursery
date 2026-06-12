@@ -33,10 +33,28 @@ model Plant {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
+  images            PlantImage[]
+
   @@index([category])
   @@index([featured])
   @@index([createdAt])
   @@map("plants")
+}
+
+// ── Plant Images (multiple per plant) ───────────────────────
+
+model PlantImage {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  plantId   String   @db.VarChar(36)
+  imageUrl  String   @db.VarChar(500)
+  imageKey  String?  @db.VarChar(500)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  plant     Plant    @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@index([plantId])
+  @@map("plant_images")
 }
 
 // ── Hero Slides ─────────────────────────────────────────────

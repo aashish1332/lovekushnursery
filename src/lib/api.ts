@@ -17,6 +17,13 @@ function buildUrl(path: string, params?: Record<string, string | number | undefi
   return `${base}${p}${qs}`
 }
 
+export interface PlantImage {
+  id: string
+  imageUrl: string
+  imageKey: string | null
+  order: number
+}
+
 export interface Plant {
   id: string
   name: string
@@ -35,6 +42,7 @@ export interface Plant {
   size: string | null
   temperature: string | null
   tags: string | null
+  images?: PlantImage[]
   createdAt: string
   updatedAt: string
 }

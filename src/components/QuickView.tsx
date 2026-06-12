@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Plant } from '../lib/api'
 
 interface QuickViewProps {
@@ -11,19 +11,36 @@ interface QuickViewProps {
 
 export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: QuickViewProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     if (!plant) return
+    setCurrentImageIndex(0)
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', handleEsc)
     document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', handleEsc)
       document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
     }
   }, [plant, onClose])
+
+  const handleWheel = (e: React.WheelEvent) => {
+    const modal = modalRef.current
+    if (!modal) return
+    const { scrollTop, scrollHeight, clientHeight } = modal
+    const atTop = scrollTop <= 0
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1
+    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+      e.preventDefault()
+    }
+    e.stopPropagation()
+  }
 
   if (!plant) return null
 
@@ -31,6 +48,9 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
   const discountPercent = hasDiscount ? Math.round(((plant.price - plant.offerPrice!) / plant.price) * 100) : 0
   const tags = plant.tags ? plant.tags.split(',').map(t => t.trim()).filter(Boolean) : []
   const isOutOfStock = plant.stockQuantity <= 0
+  const allImages = plant.images && plant.images.length > 0
+    ? plant.images.sort((a, b) => a.order - b.order).map(img => img.imageUrl)
+    : [plant.imageUrl]
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) onClose()
@@ -42,7 +62,12 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
       onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
     >
-      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl">
+      <div
+        ref={modalRef}
+        onWheel={handleWheel}
+        onTouchMove={(e) => e.stopPropagation()}
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl"
+      >
         {/* Close button */}
         <button
           onClick={onClose}
@@ -52,17 +77,44 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
         </button>
 
         <div className="flex flex-col md:flex-row">
-          {/* Image */}
+          {/* Image Carousel */}
           <div className="relative md:w-1/2">
-            <div className="aspect-square bg-gradient-to-br from-forest-50 to-sage-50">
+            <div className="bg-gradient-to-br from-forest-50 to-sage-50 relative">
               {plant.imageUrl ? (
-                <img
-                  src={plant.imageUrl}
-                  alt={plant.name}
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  <img
+                    src={allImages[currentImageIndex]}
+                    alt={plant.name}
+                    className="w-full max-h-[50vh] object-contain"
+                  />
+                  {allImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(i => i > 0 ? i - 1 : allImages.length - 1) }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center transition-colors"
+                      >
+                        <ChevronLeft size={16} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(i => i < allImages.length - 1 ? i + 1 : 0) }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center transition-colors"
+                      >
+                        <ChevronRight size={16} />
+                      </button>
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                        {allImages.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(i) }}
+                            className={`w-2 h-2 rounded-full transition-colors ${i === currentImageIndex ? 'bg-forest-800' : 'bg-forest-800/30'}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-64 flex items-center justify-center">
                   <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-forest-300/25">
                     <path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0 1 16 0c0 4.5-4 8-8 12z" />
                     <path d="M12 22V10" />

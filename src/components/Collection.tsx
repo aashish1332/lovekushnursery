@@ -41,13 +41,22 @@ function PlantCard({ plant, onClick, isWishlisted, onToggleWishlist }: {
   const isOutOfStock = plant.stockQuantity <= 0
   const isLowStock = plant.stockQuantity > 0 && plant.stockQuantity <= 5
 
+  const allImages = plant.images && plant.images.length > 0
+    ? plant.images.sort((a, b) => a.order - b.order).map(img => img.imageUrl)
+    : [plant.imageUrl]
+  const [hoverIndex, setHoverIndex] = useState(0)
+
   return (
     <div onClick={onClick} className="plant-card petal-border group border overflow-hidden cursor-pointer" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
       {/* Image */}
-      <div className={`plant-card-image relative aspect-[4/3] bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
+      <div
+        className={`plant-card-image relative aspect-[4/3] bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}
+        onMouseEnter={() => { if (allImages.length > 1) setHoverIndex(1) }}
+        onMouseLeave={() => setHoverIndex(0)}
+      >
         {plant.imageUrl ? (
           <img
-            src={plant.imageUrl}
+            src={allImages[Math.min(hoverIndex, allImages.length - 1)]}
             alt={plant.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
@@ -114,6 +123,18 @@ function PlantCard({ plant, onClick, isWishlisted, onToggleWishlist }: {
             <span className="text-white text-xs sm:text-sm font-semibold tracking-wider uppercase bg-black/50 px-4 py-2">
               Out of Stock
             </span>
+          </div>
+        )}
+
+        {/* Image count dots */}
+        {allImages.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+            {allImages.map((_, i) => (
+              <span
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${i === Math.min(hoverIndex, allImages.length - 1) ? 'bg-white' : 'bg-white/40'}`}
+              />
+            ))}
           </div>
         )}
       </div>

@@ -52,6 +52,7 @@ export async function GET(request: NextRequest) {
         orderBy: { [query.sortBy]: query.sortOrder },
         skip,
         take: query.limit,
+        include: { images: { orderBy: { order: 'asc' } } },
       }),
       prisma.plant.count({ where }),
     ])
@@ -93,7 +94,14 @@ export async function POST(request: NextRequest) {
     const size = formData.get('size') as string | null
     const temperature = formData.get('temperature') as string | null
     const tags = formData.get('tags') as string | null
-    const imageFile = formData.get('image') as File | null
+
+    // Collect all image files (keyed as 'images' or legacy 'image')
+    const imageFiles: File[] = []
+    for (const [key, value] of formData.entries()) {
+      if ((key === 'images' || key === 'image') && value instanceof File && value.size > 0) {
+        imageFiles.push(value)
+      }
+    }
 
     // 2. Validate text fields
     const validated = createPlantSchema.parse({
@@ -104,28 +112,26 @@ export async function POST(request: NextRequest) {
       howToPlant,
     })
 
-    // 3. Handle image — required for new plants
-    if (!imageFile || imageFile.size === 0) {
-      return badRequest('Image file is required')
+    // 3. At least one image required
+    if (imageFiles.length === 0) {
+      return badRequest('At least one image is required')
     }
 
-    // 4. Read image into buffer
-    const imageBuffer = Buffer.from(await imageFile.arrayBuffer())
+    // 4. Process and upload all images
+    const imageResults: { cdnUrl: string; filePath: string }[] = []
+    for (const file of imageFiles) {
+      const imageBuffer = Buffer.from(await file.arrayBuffer())
+      const metadata = await validateImage(imageBuffer)
+      const processed = await processImage(imageBuffer, {}, metadata)
+      const upload = await uploadToGitHub(
+        processed.buffer,
+        processed.filename,
+        `Add plant image: ${validated.name}`
+      )
+      imageResults.push({ cdnUrl: upload.cdnUrl, filePath: upload.filePath })
+    }
 
-    // 5. Validate image (format, size) and reuse metadata
-    const metadata = await validateImage(imageBuffer)
-
-    // 6. Process image: resize if needed → convert to WebP → optimize
-    const processed = await processImage(imageBuffer, {}, metadata)
-
-    // 7. Upload to GitHub → get CDN URL
-    const upload = await uploadToGitHub(
-      processed.buffer,
-      processed.filename,
-      `Add plant: ${validated.name}`
-    )
-
-    // 8. Save to TiDB Cloud
+    // 5. Save to TiDB Cloud (first image is primary)
     const plant = await prisma.plant.create({
       data: {
         name: validated.name,
@@ -134,8 +140,8 @@ export async function POST(request: NextRequest) {
         category: validated.category,
         description: validated.description,
         howToPlant: validated.howToPlant,
-        imageUrl: upload.cdnUrl,
-        imageKey: upload.filePath,
+        imageUrl: imageResults[0].cdnUrl,
+        imageKey: imageResults[0].filePath,
         featured,
         inStock,
         stockQuantity,
@@ -144,7 +150,15 @@ export async function POST(request: NextRequest) {
         size: size || null,
         temperature: temperature || null,
         tags: tags || null,
+        images: {
+          create: imageResults.map((r, i) => ({
+            imageUrl: r.cdnUrl,
+            imageKey: r.filePath,
+            order: i,
+          })),
+        },
       },
+      include: { images: true },
     })
 
     // Log audit
@@ -152,7 +166,7 @@ export async function POST(request: NextRequest) {
       action: 'plant.created',
       entity: 'plant',
       entityId: plant.id,
-      details: { name: plant.name, category: plant.category, price: plant.price },
+      details: { name: plant.name, category: plant.category, price: plant.price, imageCount: imageResults.length },
       performedBy: 'admin',
     })
 
