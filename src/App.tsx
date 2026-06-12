@@ -110,8 +110,8 @@ function AppContent() {
       />
       <main>
         <Hero />
-        <Offers />
         <Collection onAddToCart={handleAddToCart} addedPlantId={addedPlantId} />
+        <Offers />
         <FloralDivider />
         <Marquee />
         <TrustBadges />
