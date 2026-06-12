@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { X, Sun, Droplets, Ruler, Thermometer, ShoppingBag, Check, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react'
 import type { Plant } from '../lib/api'
 
 interface QuickViewProps {
@@ -15,6 +15,16 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
+
+  // Lightbox state
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const lastTouchDistance = useRef<number>(0)
+  const isDragging = useRef(false)
+  const dragStart = useRef({ x: 0, y: 0 })
+  const panStart = useRef({ x: 0, y: 0 })
+  const lightboxImageRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     if (!plant) return
@@ -43,6 +53,11 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
   }, [plant])
 
   const handleWheel = (e: React.WheelEvent) => {
+    if (lightboxOpen) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
     const modal = modalRef.current
     if (!modal) return
     const { scrollTop, scrollHeight, clientHeight } = modal
@@ -53,6 +68,114 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
     }
     e.stopPropagation()
   }
+
+  const resetLightbox = useCallback(() => {
+    setZoom(1)
+    setPan({ x: 0, y: 0 })
+  }, [])
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false)
+    resetLightbox()
+  }, [resetLightbox])
+
+  const toggleZoom = useCallback(() => {
+    if (zoom > 1) {
+      resetLightbox()
+    } else {
+      setZoom(2)
+    }
+  }, [zoom, resetLightbox])
+
+  const zoomIn = useCallback(() => {
+    setZoom(z => Math.min(z + 0.5, 4))
+  }, [])
+
+  const zoomOut = useCallback(() => {
+    setZoom(z => {
+      const next = Math.max(z - 0.5, 1)
+      if (next === 1) setPan({ x: 0, y: 0 })
+      return next
+    })
+  }, [])
+
+  // Lightbox wheel zoom
+  const handleLightboxWheel = useCallback((e: React.WheelEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.deltaY < 0) {
+      setZoom(z => Math.min(z + 0.15, 4))
+    } else {
+      setZoom(z => {
+        const next = Math.max(z - 0.15, 1)
+        if (next === 1) setPan({ x: 0, y: 0 })
+        return next
+      })
+    }
+  }, [])
+
+  // Touch handlers for pinch-to-zoom
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      lastTouchDistance.current = Math.sqrt(dx * dx + dy * dy)
+    } else if (e.touches.length === 1 && zoom > 1) {
+      isDragging.current = true
+      dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      panStart.current = { ...pan }
+    }
+  }, [zoom, pan])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault()
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      if (lastTouchDistance.current > 0) {
+        const scale = distance / lastTouchDistance.current
+        setZoom(z => {
+          const next = Math.min(Math.max(z * scale, 1), 4)
+          if (next === 1) setPan({ x: 0, y: 0 })
+          return next
+        })
+      }
+      lastTouchDistance.current = distance
+    } else if (e.touches.length === 1 && isDragging.current && zoom > 1) {
+      e.preventDefault()
+      const dx = e.touches[0].clientX - dragStart.current.x
+      const dy = e.touches[0].clientY - dragStart.current.y
+      setPan({ x: panStart.current.x + dx, y: panStart.current.y + dy })
+    }
+  }, [zoom])
+
+  const handleTouchEnd = useCallback(() => {
+    lastTouchDistance.current = 0
+    isDragging.current = false
+  }, [])
+
+  // Mouse drag for panning when zoomed
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (zoom > 1) {
+      isDragging.current = true
+      dragStart.current = { x: e.clientX, y: e.clientY }
+      panStart.current = { ...pan }
+      e.preventDefault()
+    }
+  }, [zoom, pan])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (isDragging.current && zoom > 1) {
+      const dx = e.clientX - dragStart.current.x
+      const dy = e.clientY - dragStart.current.y
+      setPan({ x: panStart.current.x + dx, y: panStart.current.y + dy })
+    }
+  }, [zoom])
+
+  const handleMouseUp = useCallback(() => {
+    isDragging.current = false
+  }, [])
 
   if (!plant) return null
 
@@ -97,7 +220,8 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
                   <img
                     src={allImages[currentImageIndex]}
                     alt={plant.name}
-                    className="w-full max-h-[50vh] object-contain"
+                    className="w-full max-h-[50vh] object-contain cursor-zoom-in"
+                    onClick={() => { setLightboxOpen(true); resetLightbox() }}
                   />
                   {allImages.length > 1 && (
                     <>
@@ -291,6 +415,108 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
           </div>
         </div>
       </div>
+
+      {/* ── Image Lightbox ──────────────────────────────────── */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[300] bg-black/95 flex flex-col select-none"
+          onClick={(e) => { if (e.target === e.currentTarget) closeLightbox() }}
+          onWheel={handleLightboxWheel}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Top bar */}
+          <div className="flex items-center justify-between px-4 py-3 shrink-0">
+            <span className="text-white/60 text-sm">
+              {currentImageIndex + 1} / {allImages.length}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={zoomOut}
+                className="w-9 h-9 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+              >
+                <ZoomOut size={18} />
+              </button>
+              <span className="text-white/50 text-xs w-12 text-center">{Math.round(zoom * 100)}%</span>
+              <button
+                onClick={zoomIn}
+                className="w-9 h-9 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+              >
+                <ZoomIn size={18} />
+              </button>
+              {zoom > 1 && (
+                <button
+                  onClick={resetLightbox}
+                  className="w-9 h-9 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <RotateCcw size={16} />
+                </button>
+              )}
+              <button
+                onClick={closeLightbox}
+                className="w-9 h-9 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors ml-2"
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Image area */}
+          <div
+            className="flex-1 flex items-center justify-center overflow-hidden relative"
+            style={{ cursor: zoom > 1 ? (isDragging.current ? 'grabbing' : 'grab') : 'zoom-in' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onDoubleClick={toggleZoom}
+          >
+            {allImages.length > 1 && (
+              <>
+                <button
+                  onClick={() => { setCurrentImageIndex(i => i > 0 ? i - 1 : allImages.length - 1); resetLightbox() }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={() => { setCurrentImageIndex(i => i < allImages.length - 1 ? i + 1 : 0); resetLightbox() }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+            <img
+              ref={lightboxImageRef}
+              src={allImages[currentImageIndex]}
+              alt={plant.name}
+              className="max-w-full max-h-full object-contain transition-transform duration-150"
+              style={{
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`,
+                touchAction: 'none',
+              }}
+              draggable={false}
+            />
+          </div>
+
+          {/* Thumbnail strip */}
+          {allImages.length > 1 && (
+            <div className="flex items-center justify-center gap-2 px-4 py-3 shrink-0 overflow-x-auto">
+              {allImages.map((url, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setCurrentImageIndex(i); resetLightbox() }}
+                  className={`w-12 h-12 rounded overflow-hidden border-2 transition-colors shrink-0 ${i === currentImageIndex ? 'border-white' : 'border-white/30 opacity-60'}`}
+                >
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
