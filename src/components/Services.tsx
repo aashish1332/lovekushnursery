@@ -25,26 +25,26 @@ export default function Services() {
       {/* Floral vine SVG decorations on dark section */}
       <div className="absolute top-0 right-0 opacity-[0.06] pointer-events-none">
         <svg width="160" height="260" viewBox="0 0 160 260" fill="none" className="w-28 sm:w-40">
-          <path d="M155 0 C155 50 140 100 120 130 C100 160 110 200 120 240" stroke="#c4a265" strokeWidth="1"/>
-          <path d="M120 80 C130 70 145 75 150 85" stroke="#c4a265" strokeWidth="0.7"/>
-          <path d="M115 140 C105 130 90 135 85 145" stroke="#c4a265" strokeWidth="0.7"/>
-          <path d="M120 200 C130 190 145 195 150 205" stroke="#c4a265" strokeWidth="0.7"/>
-          <ellipse cx="150" cy="85" rx="5" ry="8" transform="rotate(25 150 85)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <ellipse cx="85" cy="145" rx="5" ry="8" transform="rotate(-25 85 145)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <ellipse cx="150" cy="205" rx="5" ry="8" transform="rotate(25 150 205)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <circle cx="120" cy="245" r="3" fill="#c4a265" opacity="0.5"/>
+          <path d="M155 0 C155 50 140 100 120 130 C100 160 110 200 120 240" stroke="var(--color-gold)" strokeWidth="1"/>
+          <path d="M120 80 C130 70 145 75 150 85" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <path d="M115 140 C105 130 90 135 85 145" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <path d="M120 200 C130 190 145 195 150 205" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <ellipse cx="150" cy="85" rx="5" ry="8" transform="rotate(25 150 85)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <ellipse cx="85" cy="145" rx="5" ry="8" transform="rotate(-25 85 145)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <ellipse cx="150" cy="205" rx="5" ry="8" transform="rotate(25 150 205)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <circle cx="120" cy="245" r="3" fill="var(--color-gold)" opacity="0.5"/>
         </svg>
       </div>
       <div className="absolute bottom-0 left-0 opacity-[0.06] pointer-events-none">
         <svg width="160" height="260" viewBox="0 0 160 260" fill="none" className="w-28 sm:w-40">
-          <path d="M5 260 C5 210 20 160 40 130 C60 100 50 60 40 20" stroke="#c4a265" strokeWidth="1"/>
-          <path d="M40 180 C30 190 15 185 10 175" stroke="#c4a265" strokeWidth="0.7"/>
-          <path d="M45 120 C55 130 70 125 75 115" stroke="#c4a265" strokeWidth="0.7"/>
-          <path d="M40 60 C30 70 15 65 10 55" stroke="#c4a265" strokeWidth="0.7"/>
-          <ellipse cx="10" cy="175" rx="5" ry="8" transform="rotate(-25 10 175)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <ellipse cx="75" cy="115" rx="5" ry="8" transform="rotate(25 75 115)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <ellipse cx="10" cy="55" rx="5" ry="8" transform="rotate(-25 10 55)" stroke="#c4a265" strokeWidth="0.6" fill="none"/>
-          <circle cx="40" cy="15" r="3" fill="#c4a265" opacity="0.5"/>
+          <path d="M5 260 C5 210 20 160 40 130 C60 100 50 60 40 20" stroke="var(--color-gold)" strokeWidth="1"/>
+          <path d="M40 180 C30 190 15 185 10 175" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <path d="M45 120 C55 130 70 125 75 115" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <path d="M40 60 C30 70 15 65 10 55" stroke="var(--color-gold)" strokeWidth="0.7"/>
+          <ellipse cx="10" cy="175" rx="5" ry="8" transform="rotate(-25 10 175)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <ellipse cx="75" cy="115" rx="5" ry="8" transform="rotate(25 75 115)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <ellipse cx="10" cy="55" rx="5" ry="8" transform="rotate(-25 10 55)" stroke="var(--color-gold)" strokeWidth="0.6" fill="none"/>
+          <circle cx="40" cy="15" r="3" fill="var(--color-gold)" opacity="0.5"/>
         </svg>
       </div>
 

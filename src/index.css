@@ -24,6 +24,9 @@
   --color-hero-subtext: rgba(237, 229, 216, 0.85);
   --color-hero-label: rgba(237, 229, 216, 0.55);
   --color-overlay: rgba(26, 60, 52, 0.2);
+  --color-vine-stem: #2d6a3f;
+  --color-vine-leaf: #95b59e;
+  --color-vine-bud: #c4a265;
 }
 
 /* ── Dark Mode ───────────────────────────────────────── */
@@ -48,6 +51,9 @@
   --color-hero-subtext: rgba(149, 181, 158, 0.85);
   --color-hero-label: rgba(149, 181, 158, 0.55);
   --color-overlay: rgba(12, 12, 13, 0.3);
+  --color-vine-stem: #6b8f71;
+  --color-vine-leaf: #95b59e;
+  --color-vine-bud: #e5b96b;
 }
 
 *, *::before, *::after {
@@ -263,6 +269,25 @@ body {
   pointer-events: none;
 }
 
+/* ── Hero mesh gradient ──────────────────────────────── */
+.bg-mesh-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(45, 106, 63, 0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(26, 60, 52, 0.5) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 70% at 50% 80%, rgba(15, 42, 34, 0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 70% 70%, rgba(196, 162, 101, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0a1f1a 0%, #1a3c34 40%, #0f2a22 100%);
+}
+
+.dark .bg-mesh-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(45, 106, 63, 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(26, 60, 52, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 70% at 50% 80%, rgba(15, 42, 34, 0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 70% 70%, rgba(196, 162, 101, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #0c0c0d 0%, #161618 40%, #0c0c0d 100%);
+}
+
 /* ── Hero overlay ────────────────────────────────────── */
 .hero-overlay {
   transition: opacity 0.3s ease;
@@ -408,19 +433,44 @@ body {
 .dark .bg-cream-100 { background-color: var(--color-bg-alt); }
 .dark .text-forest-900 { color: var(--color-text); }
 .dark .text-forest-800 { color: var(--color-text); }
+.dark .text-forest-700 { color: var(--color-text-muted); }
+.dark .text-forest-500 { color: var(--color-text-muted); }
 .dark .text-sage-600 { color: var(--color-text-muted); }
-.dark .text-sage-500 { color: var(--color-text-muted); }
+.dark .text-sage-500 { color: var(--color-text-subtle); }
 .dark .text-sage-400 { color: var(--color-text-subtle); }
 .dark .border-sage-100 { border-color: var(--color-border); }
 .dark .border-sage-200 { border-color: var(--color-border); }
+.dark .border-sage-300 { border-color: var(--color-border); }
 .dark .from-forest-100 { --tw-gradient-from: #1c1c1f; }
 .dark .from-cream-100 { --tw-gradient-from: #1c1c1f; }
+.dark .from-forest-200 { --tw-gradient-from: #222226; }
 .dark .to-sage-50 { --tw-gradient-to: #222226; }
 .dark .to-cream-100 { --tw-gradient-to: #1c1c1f; }
 .dark .to-white { --tw-gradient-to: #222226; }
 .dark .to-gold-50 { --tw-gradient-to: #222226; }
-.dark .to-forest-50 { --tw-gradient-from: #1c1c1f; }
+.dark .to-forest-50 { --tw-gradient-to: #222226; }
 .dark .via-sage-100 { --tw-gradient-via: #1c1c1f; }
+.dark .from-sage-100 { --tw-gradient-from: #222226; }
+.dark .from-sage-50 { --tw-gradient-from: #1c1c1f; }
+.dark .from-gold-50 { --tw-gradient-from: #222226; }
+
+/* Dark mode: light pastel icon backgrounds → dark surfaces */
+.dark .bg-gold-50 { background-color: rgba(196, 162, 101, 0.1); }
+.dark .bg-sky-50 { background-color: rgba(56, 189, 248, 0.1); }
+.dark .bg-teal-50 { background-color: rgba(20, 184, 166, 0.1); }
+.dark .bg-orange-50 { background-color: rgba(249, 115, 22, 0.1); }
+.dark .bg-forest-50 { background-color: rgba(45, 106, 63, 0.1); }
+.dark .bg-sage-50 { background-color: rgba(149, 181, 158, 0.1); }
+.dark .bg-forest-100 { background-color: rgba(45, 106, 63, 0.12); }
+.dark .bg-forest-100:hover { background-color: rgba(45, 106, 63, 0.18); }
+
+/* Dark mode: text on icon backgrounds */
+.dark .text-sky-500 { color: #38bdf8; }
+.dark .text-teal-500 { color: #14b8a6; }
+.dark .text-orange-500 { color: #f97316; }
+
+/* Dark mode: gallery hover */
+.dark .bg-forest-900\/60 { background-color: rgba(10, 31, 26, 0.7); }
 
 /* ── Decorative: Floral elements ─────────────────────── */
 .floral-divider {

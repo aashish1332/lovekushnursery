@@ -36,8 +36,8 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Dark gradient background — the 3D canvas sits behind this */}
-      <div className="absolute inset-0 bg-mesh-gradient hero-overlay opacity-20" />
+      {/* Dark gradient background */}
+      <div className="absolute inset-0 bg-mesh-gradient hero-overlay opacity-100" />
 
       {/* Vine & climber decorations */}
       <VineCorner position="tl" opacity={0.15} />
@@ -82,7 +82,7 @@ export default function Hero() {
             <span>Explore Collection</span>
             <Leaf size={14} />
           </a>
-          <a href="#about" className="btn-outline border-cream-300/30 text-cream-200 hover:bg-cream-50 hover:text-forest-900 hover:border-cream-50 w-full sm:w-auto">
+          <a href="#about" className="btn-outline w-full sm:w-auto" style={{ borderColor: 'var(--color-hero-subtext)', color: 'var(--color-hero-subtext)' }}>
             Our Story
           </a>
         </div>

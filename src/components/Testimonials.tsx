@@ -52,7 +52,7 @@ export default function Testimonials() {
                 </div>
                 <p className="leading-relaxed mb-5 sm:mb-6 text-[13px] sm:text-[15px]" style={{ color: 'var(--color-text)' }}>"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-forest-100 to-gold-50 flex items-center justify-center font-serif text-forest-700 text-xs sm:text-sm">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center font-serif text-xs sm:text-sm" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
                     {t.name.charAt(0)}
                   </div>
                   <div>

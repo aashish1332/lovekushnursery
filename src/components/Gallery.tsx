@@ -39,7 +39,7 @@ export default function Gallery() {
 
                 {/* Plant SVG placeholder */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-forest-700 sm:w-20 sm:h-20">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" strokeWidth="0.5" style={{ stroke: 'var(--color-text)' }} className="sm:w-20 sm:h-20">
                     <path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0 1 16 0c0 4.5-4 8-8 12z" />
                     <path d="M12 22V10" />
                     <path d="M7 11c2-2 5-3 5-3s3 1 5 3" />

@@ -116,13 +116,14 @@ export default function Offers() {
 
                   {/* Coupon Code */}
                   {offer.code && (
-                    <div className="flex items-center gap-2 p-3 bg-sage-50 border border-dashed border-sage-300">
-                      <Tag size={14} className="text-forest-700 flex-shrink-0" />
-                      <span className="text-[11px] tracking-[0.15em] uppercase text-sage-600 font-medium">Code:</span>
-                      <span className="font-mono text-sm font-bold text-forest-900 tracking-wider flex-1">{offer.code}</span>
+                    <div className="flex items-center gap-2 p-3 border border-dashed" style={{ background: 'var(--color-bg-alt)', borderColor: 'var(--color-border)' }}>
+                      <Tag size={14} style={{ color: 'var(--color-text-muted)' }} className="flex-shrink-0" />
+                      <span className="text-[11px] tracking-[0.15em] uppercase font-medium" style={{ color: 'var(--color-text-subtle)' }}>Code:</span>
+                      <span className="font-mono text-sm font-bold tracking-wider flex-1" style={{ color: 'var(--color-text)' }}>{offer.code}</span>
                       <button
                         onClick={() => copyCode(offer.code!, offer.id)}
-                        className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-forest-700 hover:bg-forest-100 transition-colors"
+                        className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium transition-colors hover:opacity-80"
+                        style={{ color: 'var(--color-text-muted)' }}
                       >
                         {copiedId === offer.id ? (
                           <>
