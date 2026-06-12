@@ -7,6 +7,7 @@
     { "source": "/api/(.*)", "destination": "https://lovekushnursery-api.vercel.app/api/$1" },
     { "source": "/admin", "destination": "https://lovekushnursery-api.vercel.app/admin" },
     { "source": "/admin/(.*)", "destination": "https://lovekushnursery-api.vercel.app/admin/$1" },
+    { "source": "/_next/(.*)", "destination": "https://lovekushnursery-api.vercel.app/_next/$1" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ],
   "headers": [
