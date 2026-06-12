@@ -76,19 +76,21 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
       onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
     >
+      {/* Close button - always visible, outside scrollable area */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[60] w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors shadow-xl"
+        style={{ position: 'fixed' }}
+      >
+        <X size={20} />
+      </button>
+
       <div
         ref={modalRef}
         onWheel={handleWheel}
         onTouchMove={(e) => e.stopPropagation()}
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl"
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center bg-black/50 sm:bg-white/90 text-white sm:text-black rounded-full hover:bg-black/70 sm:hover:bg-white transition-colors shadow-lg"
-        >
-          <X size={18} />
-        </button>
 
         <div className="flex flex-col md:flex-row">
           {/* Image Carousel */}
