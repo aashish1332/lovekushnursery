@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, Suspense } from 'react'
 import { LenisProvider, useStopLenis } from './hooks/useLenis'
 
 import Loader from './components/Loader'
@@ -6,13 +6,13 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Marquee from './components/Marquee'
 import TrustBadges from './components/TrustBadges'
-import About from './components/About'
+const About = React.lazy(() => import('./components/About'))
 import Collection from './components/Collection'
-import PlantCare from './components/PlantCare'
-import Services from './components/Services'
-import Gallery from './components/Gallery'
-import Testimonials from './components/Testimonials'
-import Contact from './components/Contact'
+const PlantCare = React.lazy(() => import('./components/PlantCare'))
+const Services = React.lazy(() => import('./components/Services'))
+const Gallery = React.lazy(() => import('./components/Gallery'))
+const Testimonials = React.lazy(() => import('./components/Testimonials'))
+const Contact = React.lazy(() => import('./components/Contact'))
 import Footer from './components/Footer'
 import { FloralDivider } from './components/VineCorner'
 import { useScrollProgress } from './hooks/useScrollReveal'
@@ -116,16 +116,18 @@ function AppContent() {
         <Marquee />
         <TrustBadges />
         <FloralDivider />
-        <About />
-        <FloralDivider />
-        <PlantCare />
-        <FloralDivider />
-        <Services />
-        <FloralDivider />
-        <Gallery />
-        <FloralDivider />
-        <Testimonials />
-        <Contact />
+        <Suspense fallback={<div className="h-32 flex items-center justify-center text-sage-600">Loading section...</div>}>
+          <About />
+          <FloralDivider />
+          <PlantCare />
+          <FloralDivider />
+          <Services />
+          <FloralDivider />
+          <Gallery />
+          <FloralDivider />
+          <Testimonials />
+          <Contact />
+        </Suspense>
       </main>
       <Footer />
 

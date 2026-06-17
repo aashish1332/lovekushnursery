@@ -231,7 +231,7 @@ export default function Checkout({ isOpen, onClose, onOrderComplete, onLoginRequ
                   <div key={item.plantId} className="flex items-center gap-3 p-3 border border-sage-100">
                     <div className="w-12 h-12 flex-shrink-0 bg-sage-50 overflow-hidden">
                       {item.imageUrl ? (
-                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-sage-300">

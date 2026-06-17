@@ -550,7 +550,7 @@ export default function AccountPage({ onBack, onComplete }: AccountPageProps) {
                               <div key={i} className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-sage-50 overflow-hidden flex-shrink-0">
                                   {item.plantImage ? (
-                                    <img src={item.plantImage} alt={item.plantName} className="w-full h-full object-cover" />
+                                    <img src={item.plantImage} alt={item.plantName} className="w-full h-full object-cover" loading="lazy" />
                                   ) : null}
                                 </div>
                                 <div className="flex-1 min-w-0">

@@ -510,7 +510,7 @@ export default function QuickView({ plant, onClose, onAddToCart, addedToCart }: 
                   onClick={() => { setCurrentImageIndex(i); resetLightbox() }}
                   className={`w-12 h-12 rounded overflow-hidden border-2 transition-colors shrink-0 ${i === currentImageIndex ? 'border-white' : 'border-white/30 opacity-60'}`}
                 >
-                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <img src={url} alt={`${plant.name} thumbnail ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
                 </button>
               ))}
             </div>

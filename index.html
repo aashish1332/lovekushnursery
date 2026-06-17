@@ -9,9 +9,13 @@
     <meta property="og:title" content="Love Kush Nursery — Premium Plants & Garden Solutions in Gurugram" />
     <meta property="og:description" content="Transform your space with nature's finest. Premium plants, exotic flowers & expert landscaping in Gurugram, India." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lovekushnursery.com" />
+    <meta property="og:image" content="https://lovekushnursery.com/og-image.png" />
     <meta property="og:locale" content="en_IN" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Love Kush Nursery — Premium Plants & Garden Solutions" />
+    <meta name="twitter:image" content="https://lovekushnursery.com/og-image.png" />
+    <meta name="theme-color" content="#0a1f1a" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://lovekushnursery.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,27 +25,48 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Nursery",
-      "name": "Love Kush Nursery",
-      "description": "Premium plants, exotic flowers, garden essentials & landscaping services in Gurugram, India.",
-      "url": "https://lovekushnursery.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Gurugram",
-        "addressRegion": "Haryana",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "28.4595",
-        "longitude": "77.0266"
-      },
-      "openingHours": "Mo-Su 08:00-20:00",
-      "priceRange": "$$",
-      "areaServed": {
-        "@type": "City",
-        "name": "Gurugram"
-      }
+      "@graph": [
+        {
+          "@type": "Nursery",
+          "@id": "https://lovekushnursery.com/#nursery",
+          "name": "Love Kush Nursery",
+          "description": "Premium plants, exotic flowers, garden essentials & landscaping services in Gurugram, India.",
+          "url": "https://lovekushnursery.com",
+          "logo": "https://lovekushnursery.com/og-image.png",
+          "image": "https://lovekushnursery.com/og-image.png",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Gurugram",
+            "addressRegion": "Haryana",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "28.4595",
+            "longitude": "77.0266"
+          },
+          "openingHours": "Mo-Su 08:00-20:00",
+          "priceRange": "$$",
+          "areaServed": {
+            "@type": "City",
+            "name": "Gurugram"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://lovekushnursery.com/#website",
+          "url": "https://lovekushnursery.com/",
+          "name": "Love Kush Nursery",
+          "publisher": {
+            "@id": "https://lovekushnursery.com/#nursery"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://lovekushnursery.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
     }
     </script>
   </head>
